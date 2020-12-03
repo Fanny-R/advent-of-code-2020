@@ -8,28 +8,39 @@ import (
 )
 
 func main() {
-	//input := []string{"..##.......", "#...#...#..", ".#....#..#.", "..#.#...#.#", ".#...##..#.", "..#.##.....", ".#.#.#....#", ".#........#", "#.##...#...", "#...##....#", ".#..#...#.#"}
+	// input := []string{"..##.......", "#...#...#..", ".#....#..#.", "..#.#...#.#", ".#...##..#.", "..#.##.....", ".#.#.#....#", ".#........#", "#.##...#...", "#...##....#", ".#..#...#.#"}
 	input := extractInput()
 
-	trees := 0
-	currentPosition := 3
-	for i, line := range input {
-		if i == 0 {
-			continue
+	totalTrees := 1
+
+	for p := 1; p <= 7; p += 2 {
+		down := 1
+		if p == 1 {
+			down = 2
 		}
 
-		if string(line[currentPosition]) == "#" {
-			trees++
-		}
+		for d := 1; d <= down; d++ {
+			currentPosition := p
+			trees := 0
+			for i := d; i < len(input); i += d {
+				line := input[i]
 
-		currentPosition = currentPosition + 3
+				if string(line[currentPosition]) == "#" {
+					trees++
+				}
 
-		if currentPosition >= len(line) {
-			currentPosition = currentPosition - len(line)
+				currentPosition = currentPosition + p
+
+				if currentPosition >= len(line) {
+					currentPosition = currentPosition - len(line)
+				}
+			}
+
+			fmt.Println(trees)
+			totalTrees *= trees
 		}
 	}
-
-	fmt.Println(trees)
+	fmt.Println(totalTrees)
 }
 
 func extractInput() []string {
