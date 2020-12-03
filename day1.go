@@ -14,12 +14,15 @@ func main() {
 
 	for i := 0; i < len(input); i++ {
 		for j := 1; j < len(input); j++ {
-			if input[i]+input[j] == 2020 {
-				fmt.Println("YAY")
-				fmt.Println(input[i])
-				fmt.Println(input[j])
-				fmt.Println(input[i] * input[j])
-				return
+			for k := 2; k < len(input); k++ {
+				if input[i]+input[j]+input[k] == 2020 {
+					fmt.Println("YAY")
+					fmt.Println(input[i])
+					fmt.Println(input[j])
+					fmt.Println(input[k])
+					fmt.Println(input[i] * input[j] * input[k])
+					return
+				}
 			}
 		}
 	}
