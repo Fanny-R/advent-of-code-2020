@@ -17,15 +17,13 @@ func main() {
 		lineData := strings.Split(line, " ")
 
 		nt := strings.Split(lineData[0], "-")
-		lowest, _ := strconv.Atoi(nt[0])
-		highest, _ := strconv.Atoi(nt[1])
+		first, _ := strconv.Atoi(nt[0])
+		second, _ := strconv.Atoi(nt[1])
 
 		letter := strings.TrimSuffix(lineData[1], ":")
 		password := lineData[2]
 
-		count := strings.Count(password, letter)
-
-		if count >= lowest && count <= highest {
+		if (string(password[first-1]) == letter) != (string(password[second-1]) == letter) {
 			valid++
 		}
 	}
