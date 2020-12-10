@@ -4,17 +4,21 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strings"
 )
 
 func main() {
 	boardingPasses := extractInput()
 	highestSeatId := 0
+	var seatIdsList []int
 	for _, boardingPass := range boardingPasses {
 		row := findPosition([]int{0, 127}, boardingPass[0:7])
 		column := findPosition([]int{0, 7}, boardingPass[7:10])
 
 		seatId := (row * 8) + column
+
+		seatIdsList = append(seatIdsList, seatId)
 
 		if seatId > highestSeatId {
 			highestSeatId = seatId
@@ -23,6 +27,19 @@ func main() {
 
 	fmt.Println("Result")
 	fmt.Println(highestSeatId)
+
+	sort.Ints(seatIdsList)
+
+	var mySeat int
+	for key, seatId := range seatIdsList {
+		if seatIdsList[key+1] != seatId+1 {
+			mySeat = seatId + 1
+			break
+		}
+	}
+
+	fmt.Println("My seat")
+	fmt.Println(mySeat)
 }
 
 func findPosition(rangeEl []int, instructions string) int {
