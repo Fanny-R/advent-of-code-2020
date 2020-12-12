@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/juliangruber/go-intersect"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -18,14 +19,20 @@ func main() {
 	result := 0
 	for _, group := range groups {
 		personsAnswers := strings.Split(group, "\n")
-
-		answersInOneGroup := make(map[string]int)
-		for _, personAnswers := range personsAnswers {
-			for _, personAnswer := range personAnswers {
-				answersInOneGroup[string(personAnswer)] = 0
+		var commonAnswers []interface{}
+		for key, personAnswers := range personsAnswers {
+			answerInterface := make([]interface{}, len(personAnswers))
+			for i, answer := range personAnswers {
+				answerInterface[i] = answer
+			}
+			if key == 0 {
+				commonAnswers = answerInterface
+				continue
+			} else {
+				commonAnswers = intersect.Simple(commonAnswers, answerInterface)
 			}
 		}
-		result += len(answersInOneGroup)
+		result += len(commonAnswers)
 	}
 
 	fmt.Println("result")
