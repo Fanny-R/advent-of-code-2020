@@ -10,11 +10,30 @@ import (
 
 func main() {
 	instructions := extractInput()
+
+	for key, instruction := range instructions {
+		testedInstructions := make([]string, len(instructions))
+		copy(testedInstructions, instructions)
+		action := strings.Split(instruction, " ")
+		switch action[0] {
+		case "nop":
+			testedInstructions[key] = "jmp " + action[1]
+		case "acc":
+			continue
+		case "jmp":
+			testedInstructions[key] = "nop " + action[1]
+		default:
+			fmt.Printf("meh")
+		}
+
+		executeInstructions(testedInstructions)
+	}
+}
+
+func executeInstructions(instructions []string) {
+	var alreadyExecutedKey []int
 	key := 0
 	acc := 0
-
-	var alreadyExecutedKey []int
-
 	for {
 		instruction := strings.Split(instructions[key], " ")
 		alreadyExecutedKey = append(alreadyExecutedKey, key)
@@ -31,11 +50,12 @@ func main() {
 		}
 
 		if contains(alreadyExecutedKey, key) {
-			fmt.Println("Value in the accumulator: " + strconv.Itoa(acc))
 			break
 		}
 
 		if key >= len(instructions) {
+			fmt.Println("Finish ! Value in the accumulator: " + strconv.Itoa(acc))
+			os.Exit(0)
 			break
 		}
 	}
