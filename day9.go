@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
 
 func main() {
+	var invalid int
 	input := extractInput()
 	preamble := 25
 
@@ -27,8 +29,29 @@ func main() {
 		}
 
 		if valid == false {
-			fmt.Println("result:")
-			fmt.Println(input[i])
+			invalid = input[i]
+			break
+		}
+	}
+	fmt.Println("result part 1:")
+	fmt.Println(invalid)
+
+	for i := 0; i < len(input); i++ {
+		candidates := []int{input[i]}
+		candidateKeyOffset := 1
+		sum := input[i]
+
+		for sum < invalid {
+			candidateKey := i + candidateKeyOffset
+			sum += input[candidateKey]
+			candidates = append(candidates, input[candidateKey])
+			candidateKeyOffset++
+		}
+
+		if sum == invalid {
+			sort.Ints(candidates)
+			fmt.Println("result part 2:")
+			fmt.Println(candidates[0] + candidates[len(candidates)-1])
 			break
 		}
 	}
